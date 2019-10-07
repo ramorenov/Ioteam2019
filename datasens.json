@@ -1,0 +1,29 @@
+[
+  {
+    "deviceId": "Rasp001",
+    "sensorType": "Gas",
+    "sensorId": 1,
+    "maxValue": 100,
+    "minValue": 10,
+    "instantValue": 55,
+    "sensorStatus": "alarmed"
+  },
+  {
+    "deviceId": "Rasp001",
+    "sensorType": "Temp",
+    "sensorId": 2,
+    "maxValue": 100,
+    "minValue": 10,
+    "instantValue": 42,
+    "sensorStatus": "stable"
+  },
+  {
+    "deviceId": "Rasp001",
+    "sensorType": "Mov",
+    "sensorId": 3,
+    "maxValue": 1,
+    "minValue": 0,
+    "instantValue": 1,
+    "sensorStatus": "alarmed"
+  }
+]
