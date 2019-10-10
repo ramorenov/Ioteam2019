@@ -15,4 +15,10 @@ module.exports = function(app) {
     sensorsData.push(body);
     return res.status(201).json(body);
   });
+
+  app.post("/reset", (req, res, next) => {
+    const newbody = { deviceId: rasp001 };
+    sensorsData = newbody;
+    return res.status(201).json(body);
+  });
 };
