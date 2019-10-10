@@ -11,8 +11,8 @@ module.exports = function(app) {
 
   app.post("/sensors", (req, res, next) => {
     const { body } = req;
-    body.id = sensorsData.length + 1;
-    posts.push(body);
+    //body.id = sensorsData.length + 1;
+    sensorsData.push(body);
     return res.status(201).json(body);
   });
 };
