@@ -16,7 +16,8 @@ module.exports = function(app) {
     return res.status(201).json(body);
   });
 
-  app.post("/reset", (req, res, next) => {
+  app.get("/reset", (req, res, next) => {
+    const { body } = req;
     const newbody = { deviceId: rasp001 };
     sensorsData = newbody;
     return res.status(201).json(body);
