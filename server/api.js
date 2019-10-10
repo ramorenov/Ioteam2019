@@ -18,7 +18,7 @@ module.exports = function(app) {
 
   app.get("/reset", (req, res, next) => {
     const { body } = req;
-    const newbody = { deviceId: "rasp001" };
+    const newbody = [{ deviceId: "rasp001" }];
     sensorsData = newbody;
     return res.status(201).json(body);
   });
