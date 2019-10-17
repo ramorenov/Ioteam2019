@@ -2,7 +2,6 @@
 
 const express = require("express");
 const bodyParse = require("body-parser");
-
 const initSensorRouter = require("./api");
 
 const app = express();
