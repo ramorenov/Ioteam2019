@@ -42,17 +42,8 @@ module.exports = function(app) {
 
   // -- Rutas para base de datos MongoDB
 
-  app.post("/api/v1/newevent/sensor", (req, res) => {
-    const newEvent = Sensors(req.body);
-
-    newEvent.save((error, event) => {
-      !error ? res.send(event) : res.send(error);
-    });
-  });
-
   app.get("/api/v1/allevents/sensors", (req, res) => {
-    sensors
-      .find()
+    Sensors.find()
       .then(events => {
         res.status(200).send(events);
       })
@@ -62,8 +53,7 @@ module.exports = function(app) {
   });
 
   app.get("/api/v1/event/sensors/:eventid", (req, res) => {
-    sensors
-      .findById(req.params.eventid)
+    Sensors.findById(req.params.eventid)
       .then(event => {
         res.status(200).send(event);
       })
