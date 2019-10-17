@@ -5,7 +5,28 @@ module.exports = function(app) {
   app.get("/", function(req, res) {
     res.send("Hello IoTeam 2019");
   });
-  // -- Rutas para guardar en base de datos
+
+  // Ruta para recibir datos de raspberry
+
+  app.post("/api/v1/sensors", (req, res, next) => {
+    const { body } = req;
+
+    if (body.potSensor > 3) {
+      const data = {
+        sensor_type: "potsensor",
+        instant_value: body.potSensor,
+        event_type: "se detecto voltaje nivel alto",
+        activated: true
+      };
+      const newEvent = Sensors(data);
+
+      newEvent.save((error, event) => {
+        !error ? res.send(event) : res.send(error);
+      });
+    }
+  });
+
+  // -- Rutas para base de datos MongoDB
 
   app.post("/api/v1/newevent/sensor", (req, res) => {
     const newEvent = Sensors(req.body);
