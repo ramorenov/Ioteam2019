@@ -24,6 +24,7 @@ module.exports = function(app) {
         !error ? res.send(event) : res.send(error);
       });
     }
+    return res.status(201).json(body);
   });
 
   // -- Rutas para base de datos MongoDB
