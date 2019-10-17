@@ -13,9 +13,22 @@ module.exports = function(app) {
 
     if (body.potSensor > 3) {
       const data = {
-        sensor_type: "potsensor",
+        sensor_type: "potVoltaje",
         instant_value: body.potSensor,
         event_type: "se detecto voltaje nivel alto",
+        activated: true
+      };
+      const newEvent = Sensors(data);
+
+      newEvent.save((error, event) => {
+        !error ? res.send(event) : res.send(error);
+      });
+    }
+    if (body.gasSensor > 120) {
+      const data = {
+        sensor_type: "Gas",
+        instant_value: body.gasSensor,
+        event_type: "se detecto concentracion de gas nivel alto",
         activated: true
       };
       const newEvent = Sensors(data);
