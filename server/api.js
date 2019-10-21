@@ -15,7 +15,7 @@ module.exports = function(app) {
       const data = {
         sensor_type: "potVoltaje",
         instant_value: body.potSensor,
-        event_type: "se detecto voltaje nivel alto",
+        event_type: "High voltage level detected",
         activated: true
       };
       const newEvent = Sensors(data);
@@ -28,7 +28,7 @@ module.exports = function(app) {
       const data = {
         sensor_type: "Gas",
         instant_value: body.gasSensor,
-        event_type: "se detecto concentracion de gas nivel alto",
+        event_type: "High gas concentration level detected",
         activated: true
       };
       const newEvent = Sensors(data);
