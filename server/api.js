@@ -62,7 +62,7 @@ module.exports = function(app) {
       });
   });
 
-  app.get("/api/v1/event/sensors/:type", (req, res) => {
+  app.get("/api/v1/event/sensors-type/:type", (req, res) => {
     Sensors.find({ sensor_type: req.params.type })
       .then(event => {
         res.status(200).send(event);
