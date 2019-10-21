@@ -62,6 +62,16 @@ module.exports = function(app) {
       });
   });
 
+  app.get("/api/v1/event/sensors/:type", (req, res) => {
+    Sensors.find({ sensor_type: req.params.type })
+      .then(event => {
+        res.status(200).send(event);
+      })
+      .catch(err => {
+        res.status(404).send(err);
+      });
+  });
+
   //--------Rutas para escribir en datasens.json
   // app.get("/sensors", (req, res, next) => {
   //   return res.status(200).json(sensorsData);
