@@ -1,16 +1,23 @@
 let sensorsData = require("../datasens.json");
 const { Sensors } = require("./models");
+let realTimedata = {};
 
 module.exports = function(app) {
   app.get("/", function(req, res) {
     res.send("Hello IoTeam 2019");
   });
 
+  // Ruta para enviar datos en "tiempo real"
+
+  app.get("/api/v1/sensors/realtime", function(req, res) {
+    res.send(realTimedata);
+  });
+
   // Ruta para recibir datos de raspberry
 
   app.post("/api/v1/sensors", (req, res, next) => {
     const { body } = req;
-
+    realTimedata = body; // almacena en evento recibido en una variable
     if (body.potSensor > 3) {
       const data = {
         sensor_type: "potVoltaje",
