@@ -13,7 +13,7 @@ const users = [
 function authInit(app) {
   app.post("/api/v1/user/sing-up", async (req, res, next) => {
     const { body } = req;
-    const valid = validateData(["username", "name", "email", "password"], body);
+    const valid = validateData(["name", "lastname", "email", "password"], body);
     if (!valid) {
       return res.status(400).json({ message: "invalid data" });
     }
