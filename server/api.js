@@ -1,68 +1,41 @@
-let sensorsData = require("../datasens.json");
+const { logSens } = require("./utils");
 const { Sensors } = require("./models");
 let realTimedata = {};
 
 module.exports = function(app) {
+  // Enpoint principal
+
   app.get("/", function(req, res) {
     res.send("Hello IoTeam 2019");
   });
 
-  // Ruta para enviar datos en "tiempo real"
+  // Endpoints para que el cliente solicite datos de Raspberry devise en "tiempo real"
 
   app.get("/api/v1/sensors/realtime", function(req, res) {
     res.send(realTimedata);
   });
 
-  // Ruta para recibir datos de raspberry
+  // Enpoints para que Raspberry device envie datos de sensores
 
   app.post("/api/v1/sensors", (req, res, next) => {
     const { body } = req;
     realTimedata = body; // almacena en evento recibido en una variable
-    if (body.potSensor > 3) {
-      const data = {
-        sensor_type: "potVoltaje",
-        instant_value: body.potSensor,
-        event_type: "High voltage level detected",
-        activated: true
-      };
-      const newEvent = Sensors(data);
-
+    const dataforDB = logSens(body);
+    dataforDB.forEach(reg => {
+      const newEvent = Sensors(reg);
       newEvent.save((error, event) => {
-        !error ? res.send(event) : res.send(error);
+        return !error ? event : error;
       });
-    }
-    if (body.gasSensor > 120) {
-      const data = {
-        sensor_type: "Gas",
-        instant_value: body.gasSensor,
-        event_type: "High gas concentration level detected",
-        activated: true
-      };
-      const newEvent = Sensors(data);
-
-      newEvent.save((error, event) => {
-        !error ? res.send(event) : res.send(error);
-      });
-    }
+    });
     return res.status(201).json(body);
   });
 
-  // -- Rutas para base de datos MongoDB
+  // -- Endpoints para consultas a la base de datos MongoDB
 
   app.get("/api/v1/allevents/sensors", (req, res) => {
     Sensors.find()
       .then(events => {
         res.status(200).send(events);
-      })
-      .catch(err => {
-        res.status(404).send(err);
-      });
-  });
-
-  app.get("/api/v1/event/sensors/:eventid", (req, res) => {
-    Sensors.findById(req.params.eventid)
-      .then(event => {
-        res.status(200).send(event);
       })
       .catch(err => {
         res.status(404).send(err);
@@ -78,23 +51,4 @@ module.exports = function(app) {
         res.status(404).send(err);
       });
   });
-
-  //--------Rutas para escribir en datasens.json
-  // app.get("/sensors", (req, res, next) => {
-  //   return res.status(200).json(sensorsData);
-  // });
-
-  // app.post("/sensors", (req, res, next) => {
-  //   const { body } = req;
-  //   //body.id = sensorsData.length + 1;
-  //   sensorsData.push(body);
-  //   return res.status(201).json(body);
-  // });
-
-  // app.get("/reset", (req, res, next) => {
-  //   const { body } = req;
-  //   const newbody = [{ deviceId: "rasp001" }];
-  //   sensorsData = newbody;
-  //   return res.status(201).json(body);
-  // });
 };

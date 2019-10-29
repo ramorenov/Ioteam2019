@@ -1,4 +1,5 @@
 "use strict";
+const { Users } = require("./models");
 const bcrypt = require("bcrypt");
 const { validateData } = require("./utils");
 const users = [
@@ -11,6 +12,8 @@ const users = [
 ];
 
 function authInit(app) {
+  // Endpoint para registro de usuario
+
   app.post("/api/v1/user/sing-up", async (req, res, next) => {
     const { body } = req;
     const valid = validateData(["name", "lastname", "email", "password"], body);
@@ -20,13 +23,19 @@ function authInit(app) {
     try {
       const passwordHash = await bcrypt.hash(body.password, 10);
       body.password = passwordHash;
-      users.push(body);
+
+      const newUser = Users(body);
+      newUser.save((error, event) => {
+        !error ? console.log(event) : console.log(error);
+      });
     } catch (err) {
       return res.status(500).send("internal server error");
     }
-    console.log(users);
+
     return res.status(201).json({ message: "ok" });
   });
+
+  // Endpoint para login
 
   app.post("/api/v1/user/login", async (req, res, next) => {
     const { username, password } = req.body;
