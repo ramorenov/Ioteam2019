@@ -1,16 +1,9 @@
 "use strict";
 const { Users } = require("./models");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { validateData } = require("./utils");
-const users = [
-  {
-    username: "audionoise",
-    name: "ricardo",
-    email: "ricardomoreno@gmail.com",
-    password: "$2b$10$pD1Yez/2E5qkfcKtdGGhQuBK16qtD8WS9mfH1Gva8co15jZmbXVeq"
-  }
-];
-
+const KEY = "ecd9dc751157592c84721936aee4c7fd66aebc843a896b8bad1b49d31f9c54e2";
 function authInit(app) {
   // Endpoint para registro de usuario
 
@@ -26,7 +19,7 @@ function authInit(app) {
 
       const newUser = Users(body);
       newUser.save((error, event) => {
-        !error ? console.log(event) : console.log(error);
+        return !error ? event : error;
       });
     } catch (err) {
       return res.status(500).send("internal server error");
@@ -38,11 +31,15 @@ function authInit(app) {
   // Endpoint para login
 
   app.post("/api/v1/user/login", async (req, res, next) => {
-    const { username, password } = req.body;
-    if (!username || !password) {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
       return res.status(400).json({ message: "Invalid data" });
     }
-    const user = users.find(item => item.username === username);
+
+    const dbuser = await Users.find({ email: email });
+    const user = dbuser[0];
+
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
@@ -50,12 +47,16 @@ function authInit(app) {
     try {
       const compare = await bcrypt.compare(password, user.password);
       if (compare) {
-        delete user.password;
-        return res.status(200).json(user);
+        user.password = undefined;
+        const token = jwt.sign({ name: user.name, email: user.email }, KEY);
+        //console.log(token);
+
+        return res.status(200).json({ user, token });
       }
     } catch (err) {
       return res.status(500).json({ nessage: "internal server error" });
     }
+
     return res.status(404).json({ nessage: "usuario o contraseña invalidos" });
   });
 }
