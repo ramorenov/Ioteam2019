@@ -18,14 +18,11 @@ function authInit(app) {
       body.password = passwordHash;
 
       const newUser = Users(body);
-      newUser.save((error, event) => {
-        return !error ? event : error;
-      });
+      await newUser.save();
+      res.status(201).json({ message: "Register user ok" });
     } catch (err) {
-      return res.status(500).send("internal server error");
+      return res.status(500).send(err.message);
     }
-
-    return res.status(201).json({ message: "ok" });
   });
 
   // Endpoint para login
