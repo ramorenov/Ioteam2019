@@ -21,13 +21,17 @@ module.exports = function(app) {
     const { body } = req;
     realTimedata = body; // almacena en evento recibido en una variable
     const dataforDB = logSens(body);
-    dataforDB.forEach(reg => {
-      const newEvent = Sensors(reg);
-      newEvent.save((error, event) => {
-        return !error ? event : error;
+    if (!dataforDB[0]) {
+      return res.status(400).json({ message: "sensor threshold not exceeded" });
+    } else {
+      dataforDB.forEach(reg => {
+        const newEvent = Sensors(reg);
+        newEvent.save((err, event) => {
+          return !err ? event : err;
+        });
       });
-    });
-    return res.status(201).json(body);
+      return res.status(201).json({ message: "Register data sensors ok " });
+    }
   });
 
   // -- Endpoints para consultas a la base de datos MongoDB
