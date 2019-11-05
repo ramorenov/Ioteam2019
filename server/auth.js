@@ -56,6 +56,21 @@ function authInit(app) {
 
     return res.status(404).json({ nessage: "usuario o contraseña invalidos" });
   });
+
+  // endpoint para verificar token enviado desde front
+
+  app.get("/api/v1/user/verify-token", (req, res) => {
+    if (!req.headers.authorization) {
+      return res.status(200).send({ valid: "forbiden" });
+    }
+    jwt.verify(req.headers.authorization, KEY, error => {
+      if (error) {
+        res.status(200).send({ valid: false });
+      } else {
+        res.status(200).send({ valid: true });
+      }
+    });
+  });
 }
 
 module.exports = authInit;
