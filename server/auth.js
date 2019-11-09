@@ -48,18 +48,23 @@ function authInit(app) {
         const token = jwt.sign({ name: user.name, email: user.email }, KEY);
         //console.log(token);
 
-        return res.status(200).json({ user, token });
-      }
+        return res.status(200).json({ message: "User Logged", user, token });
+      } // else {
+      //   return res
+      //     .status(404)
+      //     .json({ nessage: "usuario o contraseña invalidos" });
+      // }
     } catch (err) {
       return res.status(500).json({ nessage: "internal server error" });
     }
 
-    return res.status(404).json({ nessage: "usuario o contraseña invalidos" });
+    return res.status(404).json({ nessage: "invalid user or password" });
   });
 
   // endpoint para verificar token enviado desde front
 
   app.get("/api/v1/user/verify-token", (req, res) => {
+    console.log(req.headers.authorization);
     if (!req.headers.authorization) {
       return res.status(200).send({ valid: "forbiden" });
     }
