@@ -5,9 +5,9 @@ function logSens(deviceData) {
   const dataArr = [];
 
   //Logica sensor de temperatura
-  if (deviceData.tempSensor > 40) {
+  if (deviceData.tempSensor > 35) {
     const data = {
-      sensor_type: "Temperature C",
+      sensor_type: "Temperature",
       instant_value: deviceData.tempSensor,
       event_type: "High temperature level detected",
       activated: true
@@ -18,7 +18,7 @@ function logSens(deviceData) {
   //Logica sensor de Humedad
   if (deviceData.humSensor > 80) {
     const data = {
-      sensor_type: "Humidity %",
+      sensor_type: "Humidity",
       instant_value: deviceData.humSensor,
       event_type: "High % Humidity detected",
       activated: true
@@ -29,7 +29,7 @@ function logSens(deviceData) {
   //Logica sensor de distancia
   if (deviceData.distSensor > 40 && deviceData.distSensor < 50) {
     const data = {
-      sensor_type: "Distance cm",
+      sensor_type: "Distance",
       instant_value: deviceData.distSensor,
       event_type: "Near obstacle detected",
       activated: true
@@ -52,7 +52,7 @@ function logSens(deviceData) {
 
   if (deviceData.potSensor > 3) {
     const data = {
-      sensor_type: "potVoltaje",
+      sensor_type: "Voltaje",
       instant_value: deviceData.potSensor,
       event_type: "High voltage level detected",
       activated: true
