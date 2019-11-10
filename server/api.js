@@ -22,7 +22,7 @@ module.exports = function(app) {
     realTimedata = body; // almacena en evento recibido en una variable
     const dataforDB = logSens(body);
     if (!dataforDB[0]) {
-      return res.status(400).json({ message: "sensor threshold not exceeded" });
+      return res.status(400).json({ message: "Sensor threshold not exceeded" });
     } else {
       dataforDB.forEach(reg => {
         const newEvent = Sensors(reg);
