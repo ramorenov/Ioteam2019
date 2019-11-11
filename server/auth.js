@@ -19,9 +19,14 @@ function authInit(app) {
 
       const newUser = Users(body);
       await newUser.save();
-      res.status(201).json({ message: "Register user ok" });
+      return res.status(201).json({ message: "Register user ok" });
     } catch (err) {
-      return res.status(500).send(err.message);
+      return (
+        res
+          .status(500)
+          //.send(err.message)
+          .json({ message: "internal server error", error: err.message })
+      );
     }
   });
 
