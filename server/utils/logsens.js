@@ -5,7 +5,7 @@ function logSens(deviceData) {
   const dataArr = [];
 
   //Logica sensor de temperatura
-  if (deviceData.tempSensor > 35) {
+  if (deviceData.tempSensor > 30) {
     const data = {
       sensor_type: "Temperature",
       instant_value: deviceData.tempSensor,
@@ -16,7 +16,7 @@ function logSens(deviceData) {
   }
 
   //Logica sensor de Humedad
-  if (deviceData.humSensor > 80) {
+  if (deviceData.humSensor > 70) {
     const data = {
       sensor_type: "Humidity",
       instant_value: deviceData.humSensor,
