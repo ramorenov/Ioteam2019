@@ -54,16 +54,12 @@ function authInit(app) {
         //console.log(token);
 
         return res.status(200).json({ message: "User Logged", user, token });
-      } // else {
-      //   return res
-      //     .status(404)
-      //     .json({ nessage: "usuario o contraseña invalidos" });
-      // }
+      }
     } catch (err) {
-      return res.status(500).json({ nessage: "internal server error" });
+      return res.status(500).json({ message: "internal server error" });
     }
 
-    return res.status(404).json({ nessage: "invalid user or password" });
+    return res.status(404).json({ message: "invalid email or password" });
   });
 
   // endpoint para verificar token enviado desde front
