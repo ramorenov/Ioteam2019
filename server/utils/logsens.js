@@ -16,7 +16,7 @@ function logSens(deviceData) {
   }
 
   //Logica sensor de Humedad
-  if (deviceData.humSensor > 70) {
+  if (deviceData.humSensor > 80) {
     const data = {
       sensor_type: "Humidity",
       instant_value: deviceData.humSensor,
